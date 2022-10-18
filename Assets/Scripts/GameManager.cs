@@ -1,21 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using UIManager;
 using UnityEngine;
 
 namespace EnglishWordReminder
 {
-    public class GameManager : MonoBehaviour
-    {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
+	public class GameManager : UISystem
+	{
+		[Header("Screens")]
+		[SerializeField] private UIScreen s_Boxes;
+		[SerializeField] private UIScreen s_Definition;
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-    }
+		protected override void GetAllScreens()
+		{
+			_screensList.Add(s_Boxes);
+			_screensList.Add(s_Definition);
+		}
+	}
 }
