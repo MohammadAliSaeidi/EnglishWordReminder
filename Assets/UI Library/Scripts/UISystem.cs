@@ -26,6 +26,8 @@ namespace UIManager
 		protected virtual void Start()
 		{
 			ShowFirstScreen();
+			GetAllScreens();
+			InitUI();
 		}
 
 		public void SwitchTo(UIScreen screen)
@@ -96,6 +98,8 @@ namespace UIManager
 		}
 
 		protected abstract void GetAllScreens();
+
+		protected abstract void InitUI();
 
 		#endregion
 	}

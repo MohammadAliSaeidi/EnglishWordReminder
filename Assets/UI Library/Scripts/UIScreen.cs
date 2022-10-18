@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-
 using Utility.Animation;
 
 namespace UIManager
@@ -10,14 +9,15 @@ namespace UIManager
 	[RequireComponent(typeof(Animator))]
 	[RequireComponent(typeof(CanvasGroup))]
 	[RequireComponent(typeof(AnimationEventDispatcher))]
+	
 	public class UIScreen : MonoBehaviour
 	{
 		#region Vaiables
 
 		#region Components
 
-		private Animator _animator;
-		private AnimationEventDispatcher _animationEventDispatcher;
+		protected Animator _animator;
+		protected AnimationEventDispatcher _animationEventDispatcher;
 
 		#endregion
 
@@ -29,7 +29,7 @@ namespace UIManager
 
 		#endregion
 
-		private Transform _content;
+		[SerializeField] protected Transform _content;
 
 		[Tooltip("will override previous screen when it is not null")]
 		[SerializeField] internal UIScreen OverridePrevScreen;
@@ -41,16 +41,11 @@ namespace UIManager
 		[Space(10)]
 		public float DelayBeforeStartingScreen = 0;
 		public float DelayBeforeClosingScreen = 0;
-		public float DefaultDelay
-		{
-			get
-			{
-				return UISystem.DefaultShowAnimSpeed / 2;
-			}
-		}
+		public readonly float DefaultDelay = UISystem.DefaultShowAnimSpeed / 2;
 
 		[Space(10)]
-		public bool DeactiveOnHide = true;
+		[Tooltip("Deactivates the Content game object under the ")]
+		public bool DeactivateContentOnHide = true;
 
 		internal ScreenState ScreenState { get; private set; }
 
@@ -58,7 +53,7 @@ namespace UIManager
 
 		#region Methods
 
-		private void OnValidate()
+		protected void OnValidate()
 		{
 			_animator = GetComponent<Animator>();
 			_animationEventDispatcher = GetComponent<AnimationEventDispatcher>();
@@ -81,7 +76,7 @@ namespace UIManager
 				{
 					ScreenState = ScreenState.Closed;
 
-					if (_content != null && DeactiveOnHide)
+					if (_content != null && DeactivateContentOnHide)
 					{
 						_content.gameObject.SetActive(false);
 					}
@@ -93,7 +88,7 @@ namespace UIManager
 			});
 		}
 
-		private void Start()
+		protected virtual void Start()
 		{
 			InitAnimationSpeed();
 		}
@@ -112,7 +107,7 @@ namespace UIManager
 			}
 		}
 
-		private Coroutine CloseCoroutine;
+		protected Coroutine CloseCoroutine;
 		[ContextMenu("Close Screen")]
 		public void Close()
 		{
@@ -127,11 +122,16 @@ namespace UIManager
 			}
 		}
 
+		private static void CreateUIScreen()
+		{
+
+		}
+
 		#endregion
 
 		#region Private Methods
 
-		private void InitAnimationSpeed()
+		protected void InitAnimationSpeed()
 		{
 			float showAnimSpeed;
 			float hideAnimSpeed;
@@ -158,9 +158,9 @@ namespace UIManager
 			_animator.SetFloat("HideTranstionDuration", hideAnimSpeed);
 		}
 
-		private Coroutine ShowCoroutine;
+		protected Coroutine ShowCoroutine;
 
-		private IEnumerator Co_Show()
+		protected IEnumerator Co_Show()
 		{
 			if (DelayBeforeStartingScreen > 0)
 			{
@@ -176,7 +176,7 @@ namespace UIManager
 			HandleAnimator("Show");
 		}
 
-		private IEnumerator Co_Close()
+		protected IEnumerator Co_Close()
 		{
 			if (DelayBeforeClosingScreen > 0)
 			{
@@ -191,7 +191,7 @@ namespace UIManager
 			HandleAnimator("Hide");
 		}
 
-		private void HandleAnimator(string aTrigger)
+		protected void HandleAnimator(string aTrigger)
 		{
 			InitAnimationSpeed();
 

@@ -284,8 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34700523a0bc68a49ad30e1101eacee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FirstScreen: {fileID: 1676251837}
-  s_Boxes: {fileID: 1676251837}
+  FirstScreen: {fileID: 0}
+  s_Boxes: {fileID: 1676251841}
   s_Definition: {fileID: 904810797}
 --- !u!1 &373769402
 GameObject:
@@ -364,7 +364,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1547,12 +1547,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57daac5c483ca574aa3e0657fb7cba59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _content: {fileID: 0}
   OverridePrevScreen: {fileID: 0}
   OverrideShowAnimSpeed: 0
   OverrideHideAnimSpeed: 0
   DelayBeforeStartingScreen: 0
   DelayBeforeClosingScreen: 0
-  DeactiveOnHide: 1
+  DeactivateContentOnHide: 1
 --- !u!114 &904810798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2667,7 +2668,7 @@ GameObject:
   - component: {fileID: 1676251840}
   - component: {fileID: 1676251839}
   - component: {fileID: 1676251838}
-  - component: {fileID: 1676251837}
+  - component: {fileID: 1676251841}
   m_Layer: 5
   m_Name: Boxes Screen
   m_TagString: Untagged
@@ -2696,24 +2697,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1676251837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676251835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57daac5c483ca574aa3e0657fb7cba59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OverridePrevScreen: {fileID: 0}
-  OverrideShowAnimSpeed: 0
-  OverrideHideAnimSpeed: 0
-  DelayBeforeStartingScreen: 0
-  DelayBeforeClosingScreen: 0
-  DeactiveOnHide: 1
 --- !u!114 &1676251838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2764,6 +2747,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1676251841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676251835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1690256dac02ad741bee6ead6f266f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _content: {fileID: 0}
+  OverridePrevScreen: {fileID: 0}
+  OverrideShowAnimSpeed: 0
+  OverrideHideAnimSpeed: 0
+  DelayBeforeStartingScreen: 0
+  DelayBeforeClosingScreen: 0
+  DeactivateContentOnHide: 1
+  b_EveryDay: {fileID: 2036349415}
+  b_EveryThreeDay: {fileID: 427078568}
+  b_EveryWeek: {fileID: 811409138}
+  b_EveryMonth: {fileID: 1024974028}
 --- !u!1 &1791792351
 GameObject:
   m_ObjectHideFlags: 0
