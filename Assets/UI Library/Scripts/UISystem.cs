@@ -23,6 +23,11 @@ namespace UIManager
 
 		#region Methods
 
+		protected abstract void GetAllScreens();
+
+		protected abstract void InitUI();
+
+
 		protected virtual void Start()
 		{
 			ShowFirstScreen();
@@ -36,8 +41,12 @@ namespace UIManager
 			{
 				if (CurrentScreen)
 				{
-					CurrentScreen.gameObject.SetActive(true);
-					CurrentScreen.Close();
+					if (screen.screenType == ScreenType.Normal)
+					{
+						CurrentScreen.gameObject.SetActive(true);
+						CurrentScreen.Close();
+					}
+
 					PrevScreen = CurrentScreen;
 				}
 
@@ -46,20 +55,10 @@ namespace UIManager
 				CurrentScreen.Show();
 
 				if (e_OnSwitchedScreen != null)
+				{
 					e_OnSwitchedScreen.Invoke();
+				}
 			}
-		}
-
-		public void Show(UIScreen screen)
-		{
-			screen.gameObject.SetActive(true);
-			screen.Show();
-		}
-
-		public void Close(UIScreen screen)
-		{
-			screen.gameObject.SetActive(true);
-			screen.Close();
 		}
 
 		public virtual void ShowFirstScreen()
@@ -96,10 +95,6 @@ namespace UIManager
 				i.Close();
 			});
 		}
-
-		protected abstract void GetAllScreens();
-
-		protected abstract void InitUI();
 
 		#endregion
 	}

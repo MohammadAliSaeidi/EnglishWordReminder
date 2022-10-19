@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,8 +10,8 @@ namespace UIManager
 	[RequireComponent(typeof(Animator))]
 	[RequireComponent(typeof(CanvasGroup))]
 	[RequireComponent(typeof(AnimationEventDispatcher))]
-	
-	public class UIScreen : MonoBehaviour
+
+	public partial class UIScreen : MonoBehaviour
 	{
 		#region Vaiables
 
@@ -43,11 +44,14 @@ namespace UIManager
 		public float DelayBeforeClosingScreen = 0;
 		public readonly float DefaultDelay = UISystem.DefaultShowAnimSpeed / 2;
 
-		[Space(10)]
-		[Tooltip("Deactivates the Content game object under the ")]
+		[Header("Screen Content Deactivation")]
+		[Tooltip("Deactivates the \"Content\" gameobject under the screen for better performance")]
+		[SerializeField] private float DeactivationDelay = 0.5f;
 		public bool DeactivateContentOnHide = true;
 
 		internal ScreenState ScreenState { get; private set; }
+		public ScreenType screenType;
+		protected Dictionary<AnimatorState, string> AnimatorStates = new Dictionary<AnimatorState, string>();
 
 		#endregion
 
@@ -86,6 +90,10 @@ namespace UIManager
 					ScreenState = ScreenState.IsShowing;
 				}
 			});
+
+			AnimatorStates.Add(AnimatorState.Idle, "UIScreen_Idle");
+			AnimatorStates.Add(AnimatorState.Show, "UIScreen_Show");
+			AnimatorStates.Add(AnimatorState.Hide, "UIScreen_Hide");
 		}
 
 		protected virtual void Start()
@@ -96,7 +104,8 @@ namespace UIManager
 		[ContextMenu("Show Screen")]
 		public void Show()
 		{
-			if (ScreenState != ScreenState.IsShowing || ScreenState != ScreenState.IsBeingShown)
+			if (ScreenState != ScreenState.IsShowing &&
+				ScreenState != ScreenState.IsBeingShown)
 			{
 				if (ShowCoroutine != null)
 				{
@@ -111,7 +120,8 @@ namespace UIManager
 		[ContextMenu("Close Screen")]
 		public void Close()
 		{
-			if (ScreenState != ScreenState.IsBeingClosed || ScreenState != ScreenState.Closed)
+			if (ScreenState != ScreenState.IsBeingClosed ||
+				ScreenState != ScreenState.Closed)
 			{
 				if (CloseCoroutine != null)
 				{
@@ -120,11 +130,6 @@ namespace UIManager
 
 				CloseCoroutine = StartCoroutine(Co_Close());
 			}
-		}
-
-		private static void CreateUIScreen()
-		{
-
 		}
 
 		#endregion
@@ -173,7 +178,7 @@ namespace UIManager
 			}
 
 			_content.gameObject.SetActive(true);
-			HandleAnimator("Show");
+			HandleAnimator(AnimatorState.Show);
 		}
 
 		protected IEnumerator Co_Close()
@@ -188,23 +193,23 @@ namespace UIManager
 				OnScreenClose.Invoke();
 			}
 
-			HandleAnimator("Hide");
+			HandleAnimator(AnimatorState.Hide);
 		}
 
-		protected void HandleAnimator(string aTrigger)
+		protected void HandleAnimator(AnimatorState state)
 		{
 			InitAnimationSpeed();
 
 			if (_animator)
 			{
-				_animator.SetTrigger(aTrigger);
+				_animator.CrossFadeInFixedTime(AnimatorStates.GetValueOrDefault(state), 0.75f);
 
-				if (aTrigger == "Show")
+				if (state == AnimatorState.Show)
 				{
 					ScreenState = ScreenState.IsBeingShown;
 				}
 
-				else if (aTrigger == "Hide")
+				else if (state == AnimatorState.Hide)
 				{
 					ScreenState = ScreenState.IsBeingClosed;
 				}
